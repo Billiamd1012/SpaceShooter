@@ -12,6 +12,10 @@ public class GameScreen implements Screen {
     private SpriteBatch batch;
     private Stage stage;
 
+    private Texture backgroundTexture;
+    private Texture floorTexture;
+    private Texture characterTexture;
+
     //reference to game instance
     Main game;
 
@@ -26,18 +30,17 @@ public class GameScreen implements Screen {
         stage = new Stage();
 
         // add background texture
-        Texture backgroundTexture = new Texture("pixel-art-space-2d-game-backgrounds/original_size/PNG/Space5/Bright/Space5.png");
+        backgroundTexture = new Texture("pixel-art-space-2d-game-backgrounds/original_size/PNG/Space5/Bright/Space5.png");
         Image backgroundImage = new Image(backgroundTexture);
         backgroundImage.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage.addActor(backgroundImage);
 
         //add floor texture
-        Texture floorTexture = new Texture("pixel-art-space-shooter-game-tileset/Tiles/Metal/metal_0000_tile.png");
+        floorTexture = new Texture("pixel-art-space-shooter-game-tileset/Tiles/Metal/metal_0000_tile.png");
         float floorScale = 5f;
 
         float scaledWidth = floorTexture.getWidth() * floorScale;
         float scaledHeight = floorTexture.getHeight() * floorScale;
-        Gdx.app.log("GameScreen: ", String.valueOf(scaledHeight));
 
         int tileCount = (int) Math.ceil(Gdx.graphics.getWidth() / scaledWidth);
         for (int i = 0; i < tileCount; i++) {
@@ -46,6 +49,9 @@ public class GameScreen implements Screen {
             floorImage.setPosition(i * scaledWidth, -(scaledHeight-(scaledHeight/3)));
             stage.addActor(floorImage);
         }
+
+        //character texture
+        characterTexture = new Texture("pixel-art-enemy-spaceship-2d-sprites/PNG_Parts&Spriter_Animation/Ship1/Ship1.png");
     }
 
     @Override
@@ -53,7 +59,10 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
+        //draw background
         stage.draw();
+        batch.draw(characterTexture, 32, 32, characterTexture.getWidth()*6, characterTexture.getHeight()*6);
+
         batch.end();
     }
 
@@ -79,6 +88,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        backgroundTexture.dispose();
+        floorTexture.dispose();
+        characterTexture.dispose();
     }
 }
