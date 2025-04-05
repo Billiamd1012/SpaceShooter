@@ -12,11 +12,14 @@ public class Main extends Game implements ApplicationListener {
     public void create() {
         gameScreen = new GameScreen(this);
         menuScreen = new MenuScreen(this);
-  }
+        setScreen(menuScreen);
+
+    }
 
     @Override
     public void render() {
-}
+        super.render();
+    }
 
     @Override
     public void dispose() {
