@@ -34,10 +34,16 @@ public class GameScreen implements Screen {
         //add floor texture
         Texture floorTexture = new Texture("pixel-art-space-shooter-game-tileset/Tiles/Metal/metal_0000_tile.png");
         float floorScale = 5f;
-        int tileCount = (int) Math.ceil(Gdx.graphics.getWidth() / (float) floorTexture.getWidth());
+
+        float scaledWidth = floorTexture.getWidth() * floorScale;
+        float scaledHeight = floorTexture.getHeight() * floorScale;
+        Gdx.app.log("GameScreen: ", String.valueOf(scaledHeight));
+
+        int tileCount = (int) Math.ceil(Gdx.graphics.getWidth() / scaledWidth);
         for (int i = 0; i < tileCount; i++) {
             Image floorImage = new Image(floorTexture);
-            floorImage.setPosition(i * floorTexture.getWidth(), 0);
+            floorImage.setSize(scaledWidth,scaledHeight);
+            floorImage.setPosition(i * scaledWidth, -(scaledHeight-(scaledHeight/3)));
             stage.addActor(floorImage);
         }
     }
