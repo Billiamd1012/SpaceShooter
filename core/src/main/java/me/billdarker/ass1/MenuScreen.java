@@ -2,6 +2,7 @@ package me.billdarker.ass1;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -24,7 +25,9 @@ public class MenuScreen implements Screen {
         this.game = game;
     }
 
-    public void create() {
+
+    @Override
+    public void show() {
         //setup ui
         Gdx.app.log("MenuScreen: ","menuScreen create");
         batch = new SpriteBatch();
@@ -59,17 +62,12 @@ public class MenuScreen implements Screen {
                 game.setScreen(Main.gameScreen);
             }
         });
-
-    }
-
-
-    @Override
-    public void show() {
-        create();
     }
 
     @Override
     public void render(float delta) {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         stage.draw();
         batch.end();

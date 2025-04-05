@@ -1,22 +1,54 @@
 package me.billdarker.ass1;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 public class GameScreen implements Screen {
-    Main game;
+    private SpriteBatch batch;
+    private Stage stage;
+
     //reference to game instance
+    Main game;
+
     public GameScreen(Main game) {
         this.game = game;
     }
 
     @Override
     public void show() {
+        Gdx.app.log("GameScreen: ","gameScreen created");
+        batch = new SpriteBatch();
+        stage = new Stage();
 
+        // add background texture
+        Texture backgroundTexture = new Texture("pixel-art-space-2d-game-backgrounds/original_size/PNG/Space5/Bright/Space5.png");
+        Image backgroundImage = new Image(backgroundTexture);
+        backgroundImage.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        stage.addActor(backgroundImage);
+
+        //add floor texture
+        Texture floorTexture = new Texture("pixel-art-space-shooter-game-tileset/Tiles/Metal/metal_0000_tile.png");
+        float floorScale = 5f;
+        int tileCount = (int) Math.ceil(Gdx.graphics.getWidth() / (float) floorTexture.getWidth());
+        for (int i = 0; i < tileCount; i++) {
+            Image floorImage = new Image(floorTexture);
+            floorImage.setPosition(i * floorTexture.getWidth(), 0);
+            stage.addActor(floorImage);
+        }
     }
 
     @Override
     public void render(float delta) {
-
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.begin();
+        stage.draw();
+        batch.end();
     }
 
     @Override
