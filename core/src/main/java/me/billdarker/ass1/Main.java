@@ -12,8 +12,9 @@ public class Main extends Game implements ApplicationListener {
     public void create() {
         gameScreen = new GameScreen(this);
         menuScreen = new MenuScreen(this);
-        setScreen(menuScreen);
-
+        //setScreen(menuScreen);
+//for development
+        setScreen(gameScreen);
     }
 
     @Override
