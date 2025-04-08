@@ -153,9 +153,38 @@ public class GameScreen implements Screen {
         int touchY = Gdx.input.getY();
 
         //poll movement
+        gamePadUpButton.update(checkTouch, touchX, touchY);
         gamePadDownButton.update(checkTouch, touchX, touchY);
+        gamePadLeftButton.update(checkTouch, touchX, touchY);
+        gamePadRightButton.update(checkTouch, touchX, touchY);
+
+        //calculate movement movement
+        //TODO: Adjust to account for time between frames
+        float moveX = 0;
+        float moveY = 0;
+        if (gamePadUpButton.isDown){
+            moveY += 4;
+        }
         if (gamePadDownButton.isDown){
-            characterY -= 1;
+            moveY -= 4;
+        }
+        if (gamePadLeftButton.isDown){
+            moveX -= 4;
+        }
+        if (gamePadRightButton.isDown){
+            moveX += 4;
+        }
+
+        //out of bounds check
+        float nextX = characterX + moveX;
+        float nextY = characterY + moveY;
+        if (nextX >= 0
+            && nextX <= Gdx.graphics.getWidth()
+            && nextY >= 0
+            && nextY <= Gdx.graphics.getHeight()){
+            //if passing add move steps
+            characterY += moveY;
+            characterX += moveX;
         }
 
     }
