@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 public class GameScreen implements Screen {
     private SpriteBatch batch;
     private Stage stage;
+    private EnemySpawner enemySpawner;
 
     //load the textures
     private Texture backgroundTexture;
@@ -43,6 +44,7 @@ public class GameScreen implements Screen {
         Gdx.app.log("GameScreen: ","gameScreen created");
         batch = new SpriteBatch();
         stage = new Stage();
+        enemySpawner = new EnemySpawner();
 
         // add background texture
         backgroundTexture = new Texture("pixel-art-space-2d-game-backgrounds/original_size/PNG/Space5/Bright/Space5.png");
@@ -122,6 +124,7 @@ public class GameScreen implements Screen {
         gamePadDown.dispose();
         gamePadLeft.dispose();
         gamePadRight.dispose();
+        enemySpawner.dispose();
     }
 
     @Override
@@ -143,11 +146,16 @@ public class GameScreen implements Screen {
         //draw character
         batch.draw(characterTexture, characterX, characterY, characterTexture.getWidth()*6, characterTexture.getHeight()*6);
 
+        //draw enemies
+        enemySpawner.drawEnemies(batch);
         batch.end();
     }
     /**Method for all game logic. This method is called at the start of GameCore.render() before
      * any actual drawing is done. */
     private void update(float deltaTime) {
+        //spawn enemies
+        enemySpawner.spawnLevel1(deltaTime);
+
         boolean checkTouch = Gdx.input.isTouched();
         int touchX = Gdx.input.getX();
         int touchY = Gdx.input.getY();
@@ -159,20 +167,20 @@ public class GameScreen implements Screen {
         gamePadRightButton.update(checkTouch, touchX, touchY);
 
         //calculate movement movement
-        //TODO: Adjust to account for time between frames
         float moveX = 0;
         float moveY = 0;
+        float moveSpeed = 10f;
         if (gamePadUpButton.isDown){
-            moveY += 4;
+            moveY += moveSpeed*deltaTime;
         }
         if (gamePadDownButton.isDown){
-            moveY -= 4;
+            moveY -= moveSpeed*deltaTime;
         }
         if (gamePadLeftButton.isDown){
-            moveX -= 4;
+            moveX -= moveSpeed*deltaTime;
         }
         if (gamePadRightButton.isDown){
-            moveX += 4;
+            moveX += moveSpeed*deltaTime;
         }
 
         //out of bounds check

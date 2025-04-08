@@ -12,14 +12,30 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
     Texture to represent the object @param skin
  */
 public class Enemy {
-    Texture skin;
-    float startingY;
-    float startingX = Gdx.graphics.getWidth();
+    private final Texture skin;
+    private float currentX = Gdx.graphics.getWidth();
+    private final float currentY;
     public Enemy(float _startingY, Texture _skin){
-        startingY = _startingY;
+        currentY = _startingY;
         skin = _skin;
     }
+    /*
+    Moves the enemy across the screen
+     */
+    public void move(float delta){
+        currentX -= 20*delta;
+       // Gdx.app.log("Enemy", "Moved enemy");
+
+    }
+
+    public boolean checkBounds(){
+        //Gdx.app.log("Enemy", "Checked enemy bounds x:" + currentX);
+
+        return !(currentX >= 0);
+
+    }
     public void draw(SpriteBatch batch) {
-        batch.draw(skin,startingX,startingY);
+        batch.draw(skin,currentX,currentY,200,200);
+        //Gdx.app.log("Enemy","Drew an enemy at x:"+ currentX + " y:" + currentY);
     }
 }
