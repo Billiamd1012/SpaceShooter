@@ -10,13 +10,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class GameScreen implements Screen {
+
+    private final float moveSpeed = 200f;
     private SpriteBatch batch;
     private Stage stage;
+    private Stage ui;
     private EnemySpawner enemySpawner;
 
     //load the textures
     private Texture backgroundTexture;
-    private Texture floorTexture;
+    //private Texture floorTexture;
     private Texture characterTexture;
     private Texture gamePadBackground;
     private Texture gamePadUp;
@@ -44,28 +47,29 @@ public class GameScreen implements Screen {
         Gdx.app.log("GameScreen: ","gameScreen created");
         batch = new SpriteBatch();
         stage = new Stage();
+        ui = new Stage();
         enemySpawner = new EnemySpawner();
 
         // add background texture
-        backgroundTexture = new Texture("pixel-art-space-2d-game-backgrounds/original_size/PNG/Space5/Bright/Space5.png");
+        backgroundTexture = new Texture("pixel-art-space-2d-game-backgrounds/original_size/PNG/Space4/Bright/Space4.png");
         Image backgroundImage = new Image(backgroundTexture);
         backgroundImage.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage.addActor(backgroundImage);
 
         //add floor texture
-        floorTexture = new Texture("pixel-art-space-shooter-game-tileset/Tiles/Metal/metal_0000_tile.png");
-        float floorScale = 5f;
-
-        float scaledWidth = floorTexture.getWidth() * floorScale;
-        float scaledHeight = floorTexture.getHeight() * floorScale;
-
-        int tileCount = (int) Math.ceil(Gdx.graphics.getWidth() / scaledWidth);
-        for (int i = 0; i < tileCount; i++) {
-            Image floorImage = new Image(floorTexture);
-            floorImage.setSize(scaledWidth,scaledHeight);
-            floorImage.setPosition(i * scaledWidth, -(scaledHeight-(scaledHeight/3)));
-            stage.addActor(floorImage);
-        }
+//        floorTexture = new Texture("pixel-art-space-shooter-game-tileset/Tiles/Metal/metal_0000_tile.png");
+//        float floorScale = 5f;
+//
+//        float scaledWidth = floorTexture.getWidth() * floorScale;
+//        float scaledHeight = floorTexture.getHeight() * floorScale;
+////
+//        int tileCount = (int) Math.ceil(Gdx.graphics.getWidth() / scaledWidth);
+//        for (int i = 0; i < tileCount; i++) {
+//            Image floorImage = new Image(floorTexture);
+//            floorImage.setSize(scaledWidth,scaledHeight);
+//            floorImage.setPosition(i * scaledWidth, -(scaledHeight-(scaledHeight/3)));
+//            stage.addActor(floorImage);
+//        }
 
         //character texture
         characterTexture = new Texture("pixel-art-enemy-spaceship-2d-sprites/PNG_Parts&Spriter_Animation/Ship1/Ship1.png");
@@ -73,42 +77,38 @@ public class GameScreen implements Screen {
         //gamepad texture
         gamePadBackground = new Texture("pixel-art-space-shooter-gui/PNG/Ingame_Interface/ingame_0035_gamepad.png");
         gamePadUp = new Texture("pixel-art-space-shooter-gui/PNG/Ingame_Interface/ingame_0034_arrow.png");
-        TextureRegionDrawable gamePadUpDrawable = new TextureRegionDrawable(gamePadUp);
         gamePadDown = new Texture("pixel-art-space-shooter-gui/PNG/Ingame_Interface/ingame_0033_arrow-copy.png");
-        TextureRegionDrawable gamePadDownDrawable = new TextureRegionDrawable(gamePadDown);
         gamePadLeft = new Texture("pixel-art-space-shooter-gui/PNG/Ingame_Interface/ingame_0031_arrow-copy-2.png");
-        TextureRegionDrawable gamePadLeftDrawable = new TextureRegionDrawable(gamePadLeft);
         gamePadRight = new Texture("pixel-art-space-shooter-gui/PNG/Ingame_Interface/ingame_0032_arrow-copy-3.png");
-        TextureRegionDrawable gamePadRightDrawable = new TextureRegionDrawable(gamePadRight);
 
         //position gamepad buttons
         float gamepadScaling = 3f;
 
         Image gamePadBackgroundImage = new Image(gamePadBackground);
         gamePadBackgroundImage.setScale(gamepadScaling);
-        gamePadBackgroundImage.setPosition((0.85f*Gdx.graphics.getWidth()),(0.15f*Gdx.graphics.getHeight()));
-        stage.addActor(gamePadBackgroundImage);
+        gamePadBackgroundImage.setPosition((0.85f*Gdx.graphics.getWidth()),(0.10f*Gdx.graphics.getHeight()));
+        ui.addActor(gamePadBackgroundImage);
 
         float GPU_x = Gdx.graphics.getWidth() * 0.89f;
-        float GPU_y = Gdx.graphics.getHeight() * 0.33f;
+        float GPU_y = Gdx.graphics.getHeight() * 0.28f;
         float GPU_w = gamePadUp.getWidth() * gamepadScaling;
         float GPU_h = gamePadUp.getHeight() * gamepadScaling;
         gamePadUpButton = new Button(GPU_x, GPU_y, GPU_w, GPU_h, gamePadUp, gamePadUp);
 
         float GPD_x = Gdx.graphics.getWidth() * 0.89f;
-        float GPD_y = Gdx.graphics.getHeight() * 0.18f;
+        float GPD_y = Gdx.graphics.getHeight() * 0.13f;
         float GPD_w = gamePadDown.getWidth() * gamepadScaling;
         float GPD_h = gamePadDown.getHeight() * gamepadScaling;
         gamePadDownButton = new Button(GPD_x, GPD_y, GPD_w, GPD_h, gamePadDown, gamePadDown);
 
         float GPL_x = Gdx.graphics.getWidth()*0.86f;
-        float GPL_y = Gdx.graphics.getHeight()*0.24f;
+        float GPL_y = Gdx.graphics.getHeight()*0.19f;
         float GPL_w = gamePadLeft.getWidth()*gamepadScaling;
         float GPL_h = gamePadLeft.getHeight()*gamepadScaling;
         gamePadLeftButton = new Button(GPL_x,GPL_y,GPL_w,GPL_h,gamePadLeft, gamePadLeft);
 
         float GPR_x = Gdx.graphics.getWidth()*0.935f;
-        float GPR_y = Gdx.graphics.getHeight()*0.24f;
+        float GPR_y = Gdx.graphics.getHeight()*0.19f;
         float GPR_w = gamePadRight.getWidth()*gamepadScaling;
         float GPR_h = gamePadRight.getHeight()*gamepadScaling;
         gamePadRightButton = new Button(GPR_x,GPR_y,GPR_w,GPR_h,gamePadRight, gamePadRight);
@@ -117,7 +117,7 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         backgroundTexture.dispose();
-        floorTexture.dispose();
+        //floorTexture.dispose();
         characterTexture.dispose();
         gamePadBackground.dispose();
         gamePadUp.dispose();
@@ -138,16 +138,20 @@ public class GameScreen implements Screen {
         batch.begin();
         //draw background
         stage.draw();
+        //draw enemies
+        enemySpawner.drawEnemies(batch);
+        //draw character
+        batch.draw(characterTexture, characterX, characterY, characterTexture.getWidth()*6, characterTexture.getHeight()*6);
+
+
         //draw controls
+        ui.draw();
         gamePadUpButton.draw(batch);
         gamePadDownButton.draw(batch);
         gamePadLeftButton.draw(batch);
         gamePadRightButton.draw(batch);
-        //draw character
-        batch.draw(characterTexture, characterX, characterY, characterTexture.getWidth()*6, characterTexture.getHeight()*6);
 
-        //draw enemies
-        enemySpawner.drawEnemies(batch);
+
         batch.end();
     }
     /**Method for all game logic. This method is called at the start of GameCore.render() before
@@ -169,7 +173,6 @@ public class GameScreen implements Screen {
         //calculate movement movement
         float moveX = 0;
         float moveY = 0;
-        float moveSpeed = 10f;
         if (gamePadUpButton.isDown){
             moveY += moveSpeed*deltaTime;
         }

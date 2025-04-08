@@ -3,6 +3,7 @@ package me.billdarker.ass1;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /*
     This is an enemy object it will travel from the right of the screen
@@ -13,11 +14,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  */
 public class Enemy {
     private final Texture skin;
+    private final TextureRegion skinRegion;
     private float currentX = Gdx.graphics.getWidth();
     private final float currentY;
     public Enemy(float _startingY, Texture _skin){
         currentY = _startingY;
         skin = _skin;
+        skinRegion = new TextureRegion(skin);
+        skinRegion.flip(true,false);
+
     }
     /*
     Moves the enemy across the screen
@@ -35,7 +40,7 @@ public class Enemy {
 
     }
     public void draw(SpriteBatch batch) {
-        batch.draw(skin,currentX,currentY,200,200);
+        batch.draw(skinRegion,currentX,currentY,200,200);
         //Gdx.app.log("Enemy","Drew an enemy at x:"+ currentX + " y:" + currentY);
     }
 }
