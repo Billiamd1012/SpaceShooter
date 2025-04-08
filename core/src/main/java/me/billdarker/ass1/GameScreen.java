@@ -31,12 +31,11 @@ public class GameScreen implements Screen {
     private Texture gamePadRight;
     private Button gamePadRightButton;
 
-    //character state variables
-    private float characterX = 32;
-    private float characterY = 32;
-
     //reference to game instance
     Main game;
+
+    //and player
+    Player player;
 
     public GameScreen(Main game) {
         this.game = game;
@@ -71,8 +70,8 @@ public class GameScreen implements Screen {
 //            stage.addActor(floorImage);
 //        }
 
-        //character texture
-        characterTexture = new Texture("pixel-art-enemy-spaceship-2d-sprites/PNG_Parts&Spriter_Animation/Ship1/Ship1.png");
+        //player
+        player = new Player();
 
         //gamepad texture
         gamePadBackground = new Texture("pixel-art-space-shooter-gui/PNG/Ingame_Interface/ingame_0035_gamepad.png");
@@ -118,13 +117,13 @@ public class GameScreen implements Screen {
     public void dispose() {
         backgroundTexture.dispose();
         //floorTexture.dispose();
-        characterTexture.dispose();
         gamePadBackground.dispose();
         gamePadUp.dispose();
         gamePadDown.dispose();
         gamePadLeft.dispose();
         gamePadRight.dispose();
         enemySpawner.dispose();
+        player.dispose();
     }
 
     @Override
@@ -141,8 +140,7 @@ public class GameScreen implements Screen {
         //draw enemies
         enemySpawner.drawEnemies(batch);
         //draw character
-        batch.draw(characterTexture, characterX, characterY, characterTexture.getWidth()*6, characterTexture.getHeight()*6);
-
+        player.draw(batch);
 
         //draw controls
         ui.draw();
@@ -186,17 +184,7 @@ public class GameScreen implements Screen {
             moveX += moveSpeed*deltaTime;
         }
 
-        //out of bounds check
-        float nextX = characterX + moveX;
-        float nextY = characterY + moveY;
-        if (nextX >= 0
-            && nextX <= Gdx.graphics.getWidth()
-            && nextY >= 0
-            && nextY <= Gdx.graphics.getHeight()){
-            //if passing add move steps
-            characterY += moveY;
-            characterX += moveX;
-        }
+        player.move(moveX,moveY);
 
     }
     @Override
