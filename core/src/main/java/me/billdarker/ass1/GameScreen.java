@@ -16,7 +16,7 @@ public class GameScreen implements Screen {
     private SpriteBatch uiBatch;
     private Stage stage;
     private Stage ui;
-    private EnemySpawner enemySpawner;
+    private EnemyManager enemyManager;
 
     //load the textures
     private Texture backgroundTexture;
@@ -51,7 +51,7 @@ public class GameScreen implements Screen {
         uiBatch = new SpriteBatch();
         stage = new Stage();
         ui = new Stage();
-        enemySpawner = new EnemySpawner();
+        enemyManager = new EnemyManager();
 
         // add background texture
         backgroundTexture = new Texture("pixel-art-space-2d-game-backgrounds/original_size/PNG/Space4/Bright/Space4.png");
@@ -134,7 +134,7 @@ public class GameScreen implements Screen {
         gamePadLeft.dispose();
         gamePadRight.dispose();
         shoot.dispose();
-        enemySpawner.dispose();
+        enemyManager.dispose();
         player.dispose();
     }
 
@@ -150,7 +150,7 @@ public class GameScreen implements Screen {
         //draw background
         stage.draw();
         //draw enemies
-        enemySpawner.drawEnemies(batch);
+        enemyManager.drawEnemies(batch);
         //draw character
         player.draw(batch);
         batch.end();
@@ -172,7 +172,7 @@ public class GameScreen implements Screen {
      * any actual drawing is done. */
     private void update(float deltaTime) {
         //spawn enemies
-        enemySpawner.spawnLevel1(deltaTime);
+        enemyManager.spawnLevel1(deltaTime);
 
         boolean checkTouch = Gdx.input.isTouched();
         int touchX = Gdx.input.getX();
@@ -206,12 +206,13 @@ public class GameScreen implements Screen {
         }
 
 
-        player.move(deltaTime,moveX,moveY);
+        player.move(moveX,moveY);
+        enemyManager.CheckBulletCollision(player.bulletsUpdate(deltaTime));
 
         //check collisions
         Rectangle playerBound = player.getBounds();
         //Gdx.app.log("Collision","Player has box height:" +playerBound.height +" width: " +playerBound.width + " at x,y: "+playerBound.x+", "+playerBound.y);
-        if (enemySpawner.CheckPlayerCollision(playerBound)){
+        if (enemyManager.CheckPlayerCollision(playerBound)){
             Gdx.app.log("Collision","Player hit an enemy");
         }
 

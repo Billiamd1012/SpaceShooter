@@ -6,12 +6,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 /*
     This class will spawn enemy object on the right side of the screen
  */
-public class EnemySpawner {
+public class EnemyManager {
     public Texture basicEnemy = new Texture("pixel-art-alien-spaceship-2d-game-sprites/PNG_Parts&Spriter_Animation/Ship5/Ship5.png");
 
     public ArrayList<Enemy> enemies = new ArrayList<>();
@@ -57,6 +58,18 @@ public class EnemySpawner {
             }
         }
         return false;
+    }
+
+    public void CheckBulletCollision(ArrayList<Rectangle> bullets){
+        Iterator<Enemy> iterator = enemies.iterator();
+        while (iterator.hasNext()) {
+            Enemy enemy = iterator.next();
+            for (Rectangle bullet:bullets){
+                if(bullet.overlaps(enemy.getBounds())){
+                    iterator.remove();
+                }
+            }
+        }
     }
 
     public void drawEnemies(SpriteBatch batch){

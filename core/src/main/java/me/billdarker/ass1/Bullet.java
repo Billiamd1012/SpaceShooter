@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 
 /*
     A bullet will travel at a set speed from the object of origin colliding with players and enemies along the way.
@@ -31,7 +31,10 @@ public class Bullet {
         float moveX = speed*delta;
         currentX += moveX;
         sprite.setPosition(currentX,currentY);
-        Gdx.app.log("Bullet","Bullet moved to "+currentX);
+    }
+
+    public Rectangle getBounds(){
+        return sprite.getBoundingRectangle();
     }
 
     public void draw(Batch batch){

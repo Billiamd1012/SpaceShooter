@@ -42,7 +42,7 @@ public class Player {
         return sprite.getBoundingRectangle();
     }
 
-    public void move(float delta, float moveX, float moveY){
+    public void move(float moveX, float moveY){
         //out of bounds check
         float nextX = characterX + moveX;
         float nextY = characterY + moveY;
@@ -55,18 +55,26 @@ public class Player {
             characterX += moveX;
             sprite.setPosition(characterX, characterY);
         }
-
+    }
+    /*
+        This method runs all of the update methods for bullets and then returns the bounding boxes of all the bullets so that enemy manager can manage collisions
+     */
+    public ArrayList<Rectangle> bulletsUpdate(float delta){
+        ArrayList<Rectangle> bulletBoxes = new ArrayList<>();
         for (Bullet bullet:
             bullets){
             bullet.move(delta);
+            bulletBoxes.add(bullet.getBounds());
         }
+
+        return bulletBoxes;
     }
 
     public void shoot(){
         Gdx.app.log("Player", "pew");
         //create bullet with bullet texture, starting position and speed
-        float startX = sprite.getX();
-        float startY = sprite.getY();
+        float startX = sprite.getX() + sprite.getWidth();
+        float startY = sprite.getY() + sprite.getHeight()/2;
         Bullet bullet = new Bullet(bulletTexture, bulletSpeed, startX, startY);
         bullets.add(bullet);
     }
