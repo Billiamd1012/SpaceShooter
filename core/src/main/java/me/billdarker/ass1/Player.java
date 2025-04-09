@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 import java.util.ArrayList;
 
 public class Player {
+    private final float bulletSpeed = -200f;
     private float characterX;
     private float characterY;
     private Texture playerTexture;
@@ -61,13 +62,15 @@ public class Player {
         //create bullet with bullet texture, starting position and speed
         float startX = sprite.getX();
         float startY = sprite.getY();
-        float speed = 200f;
-        Bullet bullet = new Bullet(bulletTexture, speed, startX, startY);
+        Bullet bullet = new Bullet(bulletTexture, bulletSpeed, startX, startY);
         bullets.add(bullet);
     }
 
     public void draw(Batch batch){
         sprite.draw(batch);
-
+        for (Bullet bullet:
+            bullets){
+            bullet.draw(batch);
+        }
     }
 }

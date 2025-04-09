@@ -1,6 +1,7 @@
 package me.billdarker.ass1;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -30,7 +31,7 @@ public class Bullet {
         sprite.setPosition(currentX+moveX,currentY);
     }
 
-    public void draw(SpriteBatch batch){
+    public void draw(Batch batch){
         sprite.draw(batch);
     }
 

@@ -31,6 +31,8 @@ public class GameScreen implements Screen {
     private Button gamePadLeftButton;
     private Texture gamePadRight;
     private Button gamePadRightButton;
+    private Texture shoot;
+    private Button shootButton;
 
     //reference to game instance
     Main game;
@@ -81,6 +83,7 @@ public class GameScreen implements Screen {
         gamePadDown = new Texture("pixel-art-space-shooter-gui/PNG/Ingame_Interface/ingame_0033_arrow-copy.png");
         gamePadLeft = new Texture("pixel-art-space-shooter-gui/PNG/Ingame_Interface/ingame_0031_arrow-copy-2.png");
         gamePadRight = new Texture("pixel-art-space-shooter-gui/PNG/Ingame_Interface/ingame_0032_arrow-copy-3.png");
+        shoot = new Texture("pixel-art-space-shooter-gui/PNG/Ingame_Interface/ingame_0030_fire.png");
 
         //position gamepad buttons
         float gamepadScaling = 3f;
@@ -113,6 +116,12 @@ public class GameScreen implements Screen {
         float GPR_w = gamePadRight.getWidth()*gamepadScaling;
         float GPR_h = gamePadRight.getHeight()*gamepadScaling;
         gamePadRightButton = new Button(GPR_x,GPR_y,GPR_w,GPR_h,gamePadRight, gamePadRight);
+
+        float shoot_x = Gdx.graphics.getWidth()*0.1f;
+        float shoot_y = Gdx.graphics.getHeight()*0.19f;
+        float shoot_w = shoot.getWidth()*gamepadScaling;
+        float shoot_h = shoot.getHeight()*gamepadScaling;
+        shootButton = new Button(shoot_x,shoot_y,shoot_w,shoot_h,shoot,shoot);
     }
 
     @Override
@@ -124,6 +133,7 @@ public class GameScreen implements Screen {
         gamePadDown.dispose();
         gamePadLeft.dispose();
         gamePadRight.dispose();
+        shoot.dispose();
         enemySpawner.dispose();
         player.dispose();
     }
@@ -154,6 +164,7 @@ public class GameScreen implements Screen {
         gamePadDownButton.draw(uiBatch);
         gamePadLeftButton.draw(uiBatch);
         gamePadRightButton.draw(uiBatch);
+        shootButton.draw(uiBatch);
         uiBatch.end();
 
     }
@@ -172,6 +183,7 @@ public class GameScreen implements Screen {
         gamePadDownButton.update(checkTouch, touchX, touchY);
         gamePadLeftButton.update(checkTouch, touchX, touchY);
         gamePadRightButton.update(checkTouch, touchX, touchY);
+        shootButton.update(checkTouch,touchX,touchY);
 
         //calculate movement movement
         float moveX = 0;
@@ -187,6 +199,10 @@ public class GameScreen implements Screen {
         }
         if (gamePadRightButton.isDown){
             moveX += moveSpeed*deltaTime;
+        }
+
+        if (shootButton.isDown){
+            player.shoot();
         }
 
         player.move(moveX,moveY);
