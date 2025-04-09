@@ -2,9 +2,12 @@ package me.billdarker.ass1;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -13,6 +16,7 @@ public class GameScreen implements Screen {
 
     private final float moveSpeed = 200f;
     private SpriteBatch batch;
+    private SpriteBatch uiBatch;
     private Stage stage;
     private Stage ui;
     private EnemySpawner enemySpawner;
@@ -45,6 +49,7 @@ public class GameScreen implements Screen {
     public void show() {
         Gdx.app.log("GameScreen: ","gameScreen created");
         batch = new SpriteBatch();
+        uiBatch = new SpriteBatch();
         stage = new Stage();
         ui = new Stage();
         enemySpawner = new EnemySpawner();
@@ -141,16 +146,18 @@ public class GameScreen implements Screen {
         enemySpawner.drawEnemies(batch);
         //draw character
         player.draw(batch);
+        batch.end();
+
+        uiBatch.begin();
 
         //draw controls
         ui.draw();
-        gamePadUpButton.draw(batch);
-        gamePadDownButton.draw(batch);
-        gamePadLeftButton.draw(batch);
-        gamePadRightButton.draw(batch);
+        gamePadUpButton.draw(uiBatch);
+        gamePadDownButton.draw(uiBatch);
+        gamePadLeftButton.draw(uiBatch);
+        gamePadRightButton.draw(uiBatch);
+        uiBatch.end();
 
-
-        batch.end();
     }
     /**Method for all game logic. This method is called at the start of GameCore.render() before
      * any actual drawing is done. */
@@ -185,6 +192,13 @@ public class GameScreen implements Screen {
         }
 
         player.move(moveX,moveY);
+
+        //check collisions
+        Rectangle playerBound = player.getBounds();
+        //Gdx.app.log("Collision","Player has box height:" +playerBound.height +" width: " +playerBound.width + " at x,y: "+playerBound.x+", "+playerBound.y);
+        if (enemySpawner.checkCollisions(playerBound)){
+            Gdx.app.log("Collision","Player hit an enemy");
+        }
 
     }
     @Override
