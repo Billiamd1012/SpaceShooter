@@ -1,5 +1,6 @@
 package me.billdarker.ass1;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -28,7 +29,9 @@ public class Bullet {
 
     public void move(float delta){
         float moveX = speed*delta;
-        sprite.setPosition(currentX+moveX,currentY);
+        currentX += moveX;
+        sprite.setPosition(currentX,currentY);
+        Gdx.app.log("Bullet","Bullet moved to "+currentX);
     }
 
     public void draw(Batch batch){

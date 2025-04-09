@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 import java.util.ArrayList;
 
 public class Player {
-    private final float bulletSpeed = -200f;
+    private final float bulletSpeed = 300f;
     private float characterX;
     private float characterY;
     private Texture playerTexture;
@@ -42,7 +42,7 @@ public class Player {
         return sprite.getBoundingRectangle();
     }
 
-    public void move(float moveX, float moveY){
+    public void move(float delta, float moveX, float moveY){
         //out of bounds check
         float nextX = characterX + moveX;
         float nextY = characterY + moveY;
@@ -54,6 +54,11 @@ public class Player {
             characterY += moveY;
             characterX += moveX;
             sprite.setPosition(characterX, characterY);
+        }
+
+        for (Bullet bullet:
+            bullets){
+            bullet.move(delta);
         }
     }
 

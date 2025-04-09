@@ -205,7 +205,8 @@ public class GameScreen implements Screen {
             player.shoot();
         }
 
-        player.move(moveX,moveY);
+
+        player.move(deltaTime,moveX,moveY);
 
         //check collisions
         Rectangle playerBound = player.getBounds();
