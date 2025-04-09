@@ -1,10 +1,8 @@
 package me.billdarker.ass1;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
 import java.util.ArrayList;
@@ -49,7 +47,7 @@ public class EnemySpawner {
     }
 
     //check collisions with player and enemy models
-    public boolean checkCollisions(Rectangle playerBound){
+    public boolean CheckPlayerCollision(Rectangle playerBound){
 
 
         for (Enemy enemy:

@@ -6,25 +6,34 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 
+import java.util.ArrayList;
+
 public class Player {
     private float characterX;
     private float characterY;
     private Texture playerTexture;
+    private Texture bulletTexture;
     private final float textureScale = 6f;
     private Sprite sprite;
 
+    private ArrayList<Bullet> bullets;
     public Player(){
         playerTexture = new Texture("pixel-art-enemy-spaceship-2d-sprites/PNG_Parts&Spriter_Animation/Ship1/Ship1.png");
+        bulletTexture = new Texture("pixel-art-space-trap-game-asset-pack/PNG_Parts&Spriter_Aniation/Plasma_cannon/Plasma_ball_cycle/Plasma_cycle1.png");
+
         int spriteWidth = (int) ((int)playerTexture.getWidth()*textureScale);
         int spriteHeight = (int) (playerTexture.getHeight()*textureScale);
         sprite = new Sprite(playerTexture);
         sprite.setSize(spriteWidth,spriteHeight);
+
+        bullets = new ArrayList<>();
 
         Gdx.app.log("Sprite", "Width: "+spriteWidth+" Height: "+spriteHeight);
         characterX = 32;
         characterY = 32;
     }
     public void dispose(){
+        bulletTexture.dispose();
         playerTexture.dispose();
     }
 
@@ -45,8 +54,16 @@ public class Player {
             characterX += moveX;
             sprite.setPosition(characterX, characterY);
         }
+    }
 
-
+    public void shoot(){
+        Gdx.app.log("Player", "pew");
+        //create bullet with bullet texture, starting position and speed
+        float startX = sprite.getX();
+        float startY = sprite.getY();
+        float speed = 200f;
+        Bullet bullet = new Bullet(bulletTexture, speed, startX, startY);
+        bullets.add(bullet);
     }
 
     public void draw(Batch batch){

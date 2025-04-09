@@ -2,15 +2,12 @@ package me.billdarker.ass1;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class GameScreen implements Screen {
 
@@ -148,6 +145,7 @@ public class GameScreen implements Screen {
         player.draw(batch);
         batch.end();
 
+        //draw separate ui batch to controls appear above everything else
         uiBatch.begin();
 
         //draw controls
@@ -196,7 +194,7 @@ public class GameScreen implements Screen {
         //check collisions
         Rectangle playerBound = player.getBounds();
         //Gdx.app.log("Collision","Player has box height:" +playerBound.height +" width: " +playerBound.width + " at x,y: "+playerBound.x+", "+playerBound.y);
-        if (enemySpawner.checkCollisions(playerBound)){
+        if (enemySpawner.CheckPlayerCollision(playerBound)){
             Gdx.app.log("Collision","Player hit an enemy");
         }
 
