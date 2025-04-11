@@ -1,10 +1,12 @@
 package me.billdarker.ass1;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
 /*
@@ -19,8 +21,11 @@ public class Enemy {
     private float currentX = Gdx.graphics.getWidth();
     private final float currentY;
     public final float textureScaling = 4f;
-
     private final Sprite sprite;
+    private Rectangle bounds;
+
+
+
     public Enemy(float _startingY, Texture _skin){
         currentY = _startingY;
         skin = _skin;
@@ -29,29 +34,31 @@ public class Enemy {
         sprite = new Sprite(skin);
         sprite.setSize(skinWidth,skinHeight);
         sprite.flip(true, false);
+        bounds = sprite.getBoundingRectangle();
     }
     /*
     Moves the enemy across the screen
      */
     public void move(float delta){
-        currentX -= 20*delta;
+        currentX -= 50*delta;
         sprite.setPosition(currentX,currentY);
         // Gdx.app.log("Enemy", "Moved enemy");
-
     }
 
     public boolean checkBounds(){
         //Gdx.app.log("Enemy", "Checked enemy bounds x:" + currentX);
-
         return !(currentX >= 0);
-
     }
 
     public Rectangle getBounds(){
-        return sprite.getBoundingRectangle();
+        bounds.setPosition(currentX,currentY);
+        Gdx.app.log("Bounds","Width "+bounds.getWidth()+" Height "+bounds.getHeight());
+        return bounds;
     }
+
     public void draw(SpriteBatch batch) {
         sprite.draw(batch);
+
         //Gdx.app.log("Enemy","Drew an enemy at x:"+ currentX + " y:" + currentY);
     }
 }

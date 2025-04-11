@@ -15,6 +15,7 @@ public class Bullet {
     private final float speed;
     private float currentX;
     private float currentY;
+    private Rectangle bounds = new Rectangle();
 
     public Bullet(Texture _skin, float _speed, float _currentX, float _currentY){
         skin = _skin;
@@ -25,6 +26,7 @@ public class Bullet {
         currentX = _currentX;
         currentY = _currentY;
         sprite.setPosition(currentX,currentY);
+        bounds = sprite.getBoundingRectangle();
     }
 
     public void move(float delta){
@@ -34,7 +36,8 @@ public class Bullet {
     }
 
     public Rectangle getBounds(){
-        return sprite.getBoundingRectangle();
+        bounds.setPosition(currentX,currentY);
+        return bounds;
     }
 
     public void draw(Batch batch){

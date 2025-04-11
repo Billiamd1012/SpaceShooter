@@ -32,20 +32,19 @@ public class EnemyManager {
         moveEnemies(delta);
     }
 
-    private void moveEnemies(float delta){
-        if (enemies == null) {
-            Gdx.app.log("Enemy", "Enemy list is null!");
-            return;
-        }
-        for (Enemy enemy:
-             enemies) {
-            enemy.move(delta);
-            if (enemy.checkBounds()){
-                enemies.remove(enemy);
-            }
+    private void moveEnemies(float delta) {
+        if (enemies == null) return;
 
+        Iterator<Enemy> iterator = enemies.iterator();
+        while (iterator.hasNext()) {
+            Enemy enemy = iterator.next();
+            enemy.move(delta);
+            if (enemy.checkBounds()) {
+                iterator.remove();
+            }
         }
     }
+
 
     //check collisions with player and enemy models
     public boolean CheckPlayerCollision(Rectangle playerBound){

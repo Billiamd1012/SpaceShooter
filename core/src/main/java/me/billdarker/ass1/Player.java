@@ -18,6 +18,9 @@ public class Player {
     private Sprite sprite;
 
     private ArrayList<Bullet> bullets;
+
+    private Rectangle bounds = new Rectangle();
+
     public Player(){
         playerTexture = new Texture("pixel-art-enemy-spaceship-2d-sprites/PNG_Parts&Spriter_Animation/Ship1/Ship1.png");
         bulletTexture = new Texture("pixel-art-space-trap-game-asset-pack/PNG_Parts&Spriter_Aniation/Plasma_cannon/Plasma_ball_cycle/Plasma_cycle1.png");
@@ -32,6 +35,7 @@ public class Player {
         Gdx.app.log("Sprite", "Width: "+spriteWidth+" Height: "+spriteHeight);
         characterX = 32;
         characterY = 32;
+        bounds = sprite.getBoundingRectangle();
     }
     public void dispose(){
         bulletTexture.dispose();
@@ -39,7 +43,8 @@ public class Player {
     }
 
     public Rectangle getBounds(){
-        return sprite.getBoundingRectangle();
+        bounds.setPosition(characterX,characterY);
+        return bounds;
     }
 
     public void move(float moveX, float moveY){
