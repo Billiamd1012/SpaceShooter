@@ -35,6 +35,16 @@ public class Bullet {
         sprite.setPosition(currentX,currentY);
     }
 
+    public boolean checkBounds(){
+        //check if bullet is on the screen if it's not then return false
+        return !(
+            sprite.getX() >= Gdx.graphics.getWidth() ||
+            sprite.getY() >= Gdx.graphics.getHeight() ||
+            sprite.getX() <= 0 ||
+            sprite.getY() <= 0
+        );
+    }
+
     public Rectangle getBounds(){
         bounds.setPosition(currentX,currentY);
         return bounds;

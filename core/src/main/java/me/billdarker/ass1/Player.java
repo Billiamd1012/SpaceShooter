@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Player {
     private final float bulletSpeed = 300f;
@@ -66,10 +67,18 @@ public class Player {
      */
     public ArrayList<Rectangle> bulletsUpdate(float delta){
         ArrayList<Rectangle> bulletBoxes = new ArrayList<>();
-        for (Bullet bullet:
-            bullets){
+        Iterator<Bullet> iterator = bullets.iterator();
+        while (iterator.hasNext()) {
+            Bullet bullet = iterator.next();
             bullet.move(delta);
-            bulletBoxes.add(bullet.getBounds());
+            if (bullet.checkBounds()){
+                bulletBoxes.add(bullet.getBounds());
+                Gdx.app.log("Bullets","Current bullet count: "+bullets.size());
+            }
+            else {
+                iterator.remove();
+                break;
+            }
         }
 
         return bulletBoxes;

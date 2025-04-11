@@ -52,7 +52,6 @@ public class Enemy {
 
     public Rectangle getBounds(){
         bounds.setPosition(currentX,currentY);
-        Gdx.app.log("Bounds","Width "+bounds.getWidth()+" Height "+bounds.getHeight());
         return bounds;
     }
 
