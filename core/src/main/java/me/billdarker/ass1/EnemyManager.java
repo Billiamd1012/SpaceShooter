@@ -59,17 +59,29 @@ public class EnemyManager {
         return false;
     }
 
-    public void CheckBulletCollision(ArrayList<Rectangle> bullets){
-        Iterator<Enemy> iterator = enemies.iterator();
-        while (iterator.hasNext()) {
-            Enemy enemy = iterator.next();
-            for (Rectangle bullet:bullets){
-                if(bullet.overlaps(enemy.getBounds())){
-                    iterator.remove();
+    /*
+    Checks if player bullets and enemies are colliding and removes both if they are
+     */
+    public void CheckBulletCollision(ArrayList<Bullet> bullets) {
+        Iterator<Enemy> enemyIterator = enemies.iterator();
+
+        while (enemyIterator.hasNext()) {
+            Enemy enemy = enemyIterator.next();
+            Iterator<Bullet> bulletIterator = bullets.iterator();
+
+            while (bulletIterator.hasNext()) {
+                Bullet bullet = bulletIterator.next();
+                Rectangle bulletRect = bullet.getBounds();
+
+                if (bulletRect.overlaps(enemy.getBounds())) {
+                    enemyIterator.remove();
+                    bulletIterator.remove();
+                    break;
                 }
             }
         }
     }
+
 
     public void drawEnemies(SpriteBatch batch){
         if (enemies == null) {

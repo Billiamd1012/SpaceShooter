@@ -70,30 +70,25 @@ public class Player {
             characterY += moveY;
             characterX += moveX;
             isMoving = Math.abs(moveX) + Math.abs(moveY) > 1f;
-            Gdx.app.log("IsMoving","Moving "+isMoving+(Math.abs(nextX) + Math.abs(nextY)));
+            //Gdx.app.log("IsMoving","Moving "+isMoving+(Math.abs(nextX) + Math.abs(nextY)));
             sprite.setPosition(characterX, characterY);
         }
     }
     /*
         This method runs all of the update methods for bullets and then returns the bounding boxes of all the bullets so that enemy manager can manage collisions
      */
-    public ArrayList<Rectangle> bulletsUpdate(float delta){
-        ArrayList<Rectangle> bulletBoxes = new ArrayList<>();
+    public ArrayList<Bullet> bulletsUpdate(float delta){
         Iterator<Bullet> iterator = bullets.iterator();
         while (iterator.hasNext()) {
             Bullet bullet = iterator.next();
             bullet.move(delta);
-            if (bullet.checkBounds()){
-                bulletBoxes.add(bullet.getBounds());
-//                Gdx.app.log("Bullets","Current bullet count: "+bullets.size());
-            }
-            else {
+            if (!bullet.checkBounds()){
                 iterator.remove();
                 break;
             }
         }
 
-        return bulletBoxes;
+        return bullets;
     }
 
     public void shoot(){

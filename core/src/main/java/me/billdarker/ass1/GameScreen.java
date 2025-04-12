@@ -193,13 +193,15 @@ public class GameScreen implements Screen {
         }
         lastShot += deltaTime;
 
-        Gdx.app.log("Movement","X "+moveX+" Y "+moveY);
+        //Gdx.app.log("Movement","X "+moveX+" Y "+moveY);
         player.move(moveX,moveY);
         enemyManager.CheckBulletCollision(player.bulletsUpdate(deltaTime));
 
         //check collisions
         Rectangle playerBound = player.getBounds();
         //Gdx.app.log("Collision","Player has box height:" +playerBound.height +" width: " +playerBound.width + " at x,y: "+playerBound.x+", "+playerBound.y);
+
+        //if enemy hits the player then end the game
         if (enemyManager.CheckPlayerCollision(playerBound)){
             Gdx.app.log("Collision","Player hit an enemy");
         }
