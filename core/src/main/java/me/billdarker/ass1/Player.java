@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Player {
-    private final float bulletSpeed = 300f;
+    private final float bulletSpeed = 600f;
     private float characterX;
     private float characterY;
     private Texture playerTexture;
