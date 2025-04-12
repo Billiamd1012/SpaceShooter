@@ -13,14 +13,18 @@ public class Bullet {
     private final Texture skin;
     private final Sprite sprite;
     private final float speed;
+    private final float scaling = 3f;
     private float currentX;
     private float currentY;
     private Rectangle bounds = new Rectangle();
 
     public Bullet(Texture _skin, float _speed, float _currentX, float _currentY){
         skin = _skin;
+        int spriteWidth = (int) (skin.getWidth()*scaling);
+        int spriteHeight = (int) (skin.getHeight()*scaling);
         speed = _speed;
         sprite = new Sprite(skin);
+        sprite.setSize(spriteWidth,spriteHeight);
 
         //position
         currentX = _currentX;

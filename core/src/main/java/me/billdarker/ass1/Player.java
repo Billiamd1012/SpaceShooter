@@ -24,7 +24,7 @@ public class Player {
 
     public Player(){
         playerTexture = new Texture("pixel-art-enemy-spaceship-2d-sprites/PNG_Parts&Spriter_Animation/Ship1/Ship1.png");
-        bulletTexture = new Texture("pixel-art-space-trap-game-asset-pack/PNG_Parts&Spriter_Aniation/Plasma_cannon/Plasma_ball_cycle/Plasma_cycle1.png");
+        bulletTexture = new Texture("pixel-art-alien-spaceship-2d-game-sprites/PNG_Animations/Shots/Shot1/shot1_asset.png");
 
         int spriteWidth = (int) ((int)playerTexture.getWidth()*textureScale);
         int spriteHeight = (int) (playerTexture.getHeight()*textureScale);
@@ -73,7 +73,7 @@ public class Player {
             bullet.move(delta);
             if (bullet.checkBounds()){
                 bulletBoxes.add(bullet.getBounds());
-                Gdx.app.log("Bullets","Current bullet count: "+bullets.size());
+//                Gdx.app.log("Bullets","Current bullet count: "+bullets.size());
             }
             else {
                 iterator.remove();
@@ -87,17 +87,18 @@ public class Player {
     public void shoot(){
         Gdx.app.log("Player", "pew");
         //create bullet with bullet texture, starting position and speed
-        float startX = sprite.getX() + sprite.getWidth();
-        float startY = sprite.getY() + sprite.getHeight()/2;
+        float startX = sprite.getX() + sprite.getWidth()*0.70f;
+        float startY = sprite.getY() + sprite.getHeight()/4;
         Bullet bullet = new Bullet(bulletTexture, bulletSpeed, startX, startY);
         bullets.add(bullet);
     }
 
     public void draw(Batch batch){
-        sprite.draw(batch);
         for (Bullet bullet:
             bullets){
             bullet.draw(batch);
         }
+        sprite.draw(batch);
+
     }
 }

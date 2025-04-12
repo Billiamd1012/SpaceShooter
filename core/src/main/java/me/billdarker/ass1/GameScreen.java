@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 public class GameScreen implements Screen {
 
     private final float moveSpeed = 200f;
+    private float lastShot;
+    private final float shotCooldown = 0.5f;
     private SpriteBatch batch;
     private SpriteBatch uiBatch;
     private Stage stage;
@@ -20,8 +22,6 @@ public class GameScreen implements Screen {
 
     //load the textures
     private Texture backgroundTexture;
-    //private Texture floorTexture;
-    private Texture characterTexture;
     private Texture gamePadBackground;
     private Texture gamePadUp;
     private Button gamePadUpButton;
@@ -58,21 +58,6 @@ public class GameScreen implements Screen {
         Image backgroundImage = new Image(backgroundTexture);
         backgroundImage.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage.addActor(backgroundImage);
-
-        //add floor texture
-//        floorTexture = new Texture("pixel-art-space-shooter-game-tileset/Tiles/Metal/metal_0000_tile.png");
-//        float floorScale = 5f;
-//
-//        float scaledWidth = floorTexture.getWidth() * floorScale;
-//        float scaledHeight = floorTexture.getHeight() * floorScale;
-////
-//        int tileCount = (int) Math.ceil(Gdx.graphics.getWidth() / scaledWidth);
-//        for (int i = 0; i < tileCount; i++) {
-//            Image floorImage = new Image(floorTexture);
-//            floorImage.setSize(scaledWidth,scaledHeight);
-//            floorImage.setPosition(i * scaledWidth, -(scaledHeight-(scaledHeight/3)));
-//            stage.addActor(floorImage);
-//        }
 
         //player
         player = new Player();
@@ -200,10 +185,13 @@ public class GameScreen implements Screen {
         if (gamePadRightButton.isDown){
             moveX += moveSpeed*deltaTime;
         }
-
         if (shootButton.isDown){
-            player.shoot();
+            if (lastShot >= shotCooldown){
+                player.shoot();
+                lastShot = 0f;
+            }
         }
+        lastShot += deltaTime;
 
 
         player.move(moveX,moveY);
