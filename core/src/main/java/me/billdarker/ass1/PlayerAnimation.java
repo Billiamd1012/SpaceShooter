@@ -14,8 +14,12 @@ public class PlayerAnimation {
      */
     public PlayerAnimation(){
         //flight
+        flight = new Animation<>(0.1f, loadFrames("pixel-art-alien-spaceship-2d-game-sprites/PNG_Animations/Exhaust/Ship1/Ship1_flight_00", 4));
+        flight.setPlayMode(Animation.PlayMode.LOOP);
 
         //turbo
+        turbo = new Animation<>(0.1f, loadFrames("pixel-art-alien-spaceship-2d-game-sprites/PNG_Animations/Exhaust/Ship1/Ship1_turbo_00", 4));
+        turbo.setPlayMode(Animation.PlayMode.LOOP);
     }
 
     /*
@@ -28,4 +32,6 @@ public class PlayerAnimation {
         }
         return frames;
     }
+
+    
 }
