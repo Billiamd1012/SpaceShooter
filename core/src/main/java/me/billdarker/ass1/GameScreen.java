@@ -34,6 +34,8 @@ public class GameScreen implements Screen {
     private Texture shoot;
     private Button shootButton;
 
+    private boolean isPaused;
+
     //reference to game instance
     Main game;
 
@@ -46,6 +48,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        isPaused = false;
+
         Gdx.app.log("GameScreen: ","gameScreen created");
         batch = new SpriteBatch();
         uiBatch = new SpriteBatch();
@@ -125,33 +129,34 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        if (!isPaused) {
+            Gdx.gl.glClearColor(0, 0, 0, 1);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        //update game state
-        update(delta);
+            //update game state
+            update(delta);
 
-        batch.begin();
-        //draw background
-        stage.draw();
-        //draw enemies
-        enemyManager.drawEnemies(batch);
-        //draw character
-        player.draw(batch,delta);
-        batch.end();
+            batch.begin();
+            //draw background
+            stage.draw();
+            //draw enemies
+            enemyManager.drawEnemies(batch);
+            //draw character
+            player.draw(batch, delta);
+            batch.end();
 
-        //draw separate ui batch to controls appear above everything else
-        uiBatch.begin();
+            //draw separate ui batch to controls appear above everything else
+            uiBatch.begin();
 
-        //draw controls
-        ui.draw();
-        gamePadUpButton.draw(uiBatch);
-        gamePadDownButton.draw(uiBatch);
-        gamePadLeftButton.draw(uiBatch);
-        gamePadRightButton.draw(uiBatch);
-        shootButton.draw(uiBatch);
-        uiBatch.end();
-
+            //draw controls
+            ui.draw();
+            gamePadUpButton.draw(uiBatch);
+            gamePadDownButton.draw(uiBatch);
+            gamePadLeftButton.draw(uiBatch);
+            gamePadRightButton.draw(uiBatch);
+            shootButton.draw(uiBatch);
+            uiBatch.end();
+        }
     }
     /**Method for all game logic. This method is called at the start of GameCore.render() before
      * any actual drawing is done. */
@@ -203,6 +208,7 @@ public class GameScreen implements Screen {
 
         //if enemy hits the player then end the game
         if (enemyManager.CheckPlayerCollision(playerBound)){
+            isPaused = true;
             Gdx.app.log("Collision","Player hit an enemy");
         }
 
@@ -214,12 +220,12 @@ public class GameScreen implements Screen {
 
     @Override
     public void pause() {
-
+        isPaused = true;
     }
 
     @Override
     public void resume() {
-
+        isPaused = false;
     }
 
     @Override
