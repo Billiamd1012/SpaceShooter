@@ -4,13 +4,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import java.util.ArrayList;
+
 public class PlayerAnimation {
-    Animation<TextureRegion> flight, turbo;
-    float stateTime = 0f;
+    private Animation<TextureRegion> flight, turbo;
+    private float stateTime = 0f;
+    private final ArrayList<Texture> texturesToDispose = new ArrayList<>();
 
     /*
-        Get the flight and turbo flight states, when no input ship is just flying when there is movement input ship is in turbo mode
-
+        Constructor takes texture scaling
      */
     public PlayerAnimation(){
         //flight
@@ -23,22 +25,32 @@ public class PlayerAnimation {
     }
 
     /*
-    Function to get the frames to be displayed
+        Load frames from individual files and track textures for cleanup
      */
     private TextureRegion[] loadFrames(String prefix, int count) {
         TextureRegion[] frames = new TextureRegion[count];
         for (int i = 0; i < count; i++) {
-            frames[i] = new TextureRegion(new Texture(prefix + (i + 1) + ".png"));
+            Texture texture = new Texture(prefix + (i + 1) + ".png");
+            texturesToDispose.add(texture);
+            frames[i] = new TextureRegion(texture);
         }
         return frames;
     }
 
     /*
-    Function called every frame to get the current frame to display
+        Get the current frame to display
      */
     public TextureRegion getFrame(boolean isMoving, float delta) {
         stateTime += delta;
         return (isMoving ? turbo : flight).getKeyFrame(stateTime);
     }
-    
+
+    /*
+        Dispose of all textures
+     */
+    public void dispose(){
+        for (Texture texture : texturesToDispose) {
+            texture.dispose();
+        }
+    }
 }
