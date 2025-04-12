@@ -33,5 +33,11 @@ public class PlayerAnimation {
         return frames;
     }
 
-    
+    /*
+    Function called every frame to get the current frame to display
+     */
+    public TextureRegion getFrame(boolean isMoving, float delta) {
+        stateTime += delta;
+        return (isMoving ? turbo : flight).getKeyFrame(stateTime);
+    }
 }
