@@ -26,6 +26,9 @@ public class Player {
     private boolean isMoving = false;
     private TextureRegion frame;
 
+    private float exhaustOffsetX;
+    private float exhaustOffsetY;
+
     public Player(){
         playerTexture = new Texture("pixel-art-enemy-spaceship-2d-sprites/PNG_Parts&Spriter_Animation/Ship1/Ship1.png");
         bulletTexture = new Texture("pixel-art-alien-spaceship-2d-game-sprites/PNG_Animations/Shots/Shot1/shot1_asset.png");
@@ -41,6 +44,9 @@ public class Player {
         characterX = 32;
         characterY = 32;
         bounds = sprite.getBoundingRectangle();
+
+        exhaustOffsetY = spriteHeight*-0.02f;
+        exhaustOffsetX = spriteWidth*-0.55f;
     }
     public void dispose(){
         bulletTexture.dispose();
@@ -56,12 +62,6 @@ public class Player {
         //out of bounds check
         float nextX = characterX + moveX;
         float nextY = characterY + moveY;
-        if (nextX + nextY > 0){
-            isMoving = true;
-        }
-        else {
-            isMoving = false;
-        }
         if (nextX >= 0
             && nextX <= Gdx.graphics.getWidth()-(playerTexture.getWidth()*textureScale)
             && nextY >= -playerTexture.getHeight()
@@ -69,6 +69,8 @@ public class Player {
             //if passing add move steps
             characterY += moveY;
             characterX += moveX;
+            isMoving = Math.abs(moveX) + Math.abs(moveY) > 1f;
+            Gdx.app.log("IsMoving","Moving "+isMoving+(Math.abs(nextX) + Math.abs(nextY)));
             sprite.setPosition(characterX, characterY);
         }
     }
@@ -97,8 +99,8 @@ public class Player {
     public void shoot(){
         Gdx.app.log("Player", "pew");
         //create bullet with bullet texture, starting position and speed
-        float startX = sprite.getX() + sprite.getWidth()*0.70f;
-        float startY = sprite.getY() + sprite.getHeight()/4;
+        float startX = characterX + sprite.getWidth()*0.70f;
+        float startY = characterY + sprite.getHeight()/4;
         Bullet bullet = new Bullet(bulletTexture, bulletSpeed, startX, startY);
         bullets.add(bullet);
     }
@@ -109,7 +111,7 @@ public class Player {
             bullet.draw(batch);
         }
         frame = playerAnimation.getFrame(isMoving, delta);
-        sprite.setRegion(frame);
+        batch.draw(frame,characterX+exhaustOffsetX,characterY+exhaustOffsetY,frame.getRegionWidth()*textureScale,frame.getRegionHeight()*textureScale);
         sprite.draw(batch);
 
     }

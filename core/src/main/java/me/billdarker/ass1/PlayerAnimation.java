@@ -40,4 +40,5 @@ public class PlayerAnimation {
         stateTime += delta;
         return (isMoving ? turbo : flight).getKeyFrame(stateTime);
     }
+    
 }

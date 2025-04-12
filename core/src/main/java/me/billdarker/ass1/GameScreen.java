@@ -193,7 +193,7 @@ public class GameScreen implements Screen {
         }
         lastShot += deltaTime;
 
-
+        Gdx.app.log("Movement","X "+moveX+" Y "+moveY);
         player.move(moveX,moveY);
         enemyManager.CheckBulletCollision(player.bulletsUpdate(deltaTime));
 
