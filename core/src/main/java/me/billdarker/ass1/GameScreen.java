@@ -137,7 +137,7 @@ public class GameScreen implements Screen {
         //draw enemies
         enemyManager.drawEnemies(batch);
         //draw character
-        player.draw(batch);
+        player.draw(batch,delta);
         batch.end();
 
         //draw separate ui batch to controls appear above everything else

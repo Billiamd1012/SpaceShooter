@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 
 import java.util.ArrayList;
@@ -21,6 +22,9 @@ public class Player {
     private ArrayList<Bullet> bullets;
 
     private Rectangle bounds = new Rectangle();
+    private final PlayerAnimation playerAnimation = new PlayerAnimation();
+    private boolean isMoving = false;
+    private TextureRegion frame;
 
     public Player(){
         playerTexture = new Texture("pixel-art-enemy-spaceship-2d-sprites/PNG_Parts&Spriter_Animation/Ship1/Ship1.png");
@@ -52,6 +56,12 @@ public class Player {
         //out of bounds check
         float nextX = characterX + moveX;
         float nextY = characterY + moveY;
+        if (nextX + nextY > 0){
+            isMoving = true;
+        }
+        else {
+            isMoving = false;
+        }
         if (nextX >= 0
             && nextX <= Gdx.graphics.getWidth()-(playerTexture.getWidth()*textureScale)
             && nextY >= -playerTexture.getHeight()
@@ -93,11 +103,13 @@ public class Player {
         bullets.add(bullet);
     }
 
-    public void draw(Batch batch){
+    public void draw(Batch batch, float delta){
         for (Bullet bullet:
             bullets){
             bullet.draw(batch);
         }
+        frame = playerAnimation.getFrame(isMoving, delta);
+        sprite.setRegion(frame);
         sprite.draw(batch);
 
     }
