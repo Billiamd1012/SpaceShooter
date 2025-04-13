@@ -17,6 +17,14 @@ public class Main extends Game implements ApplicationListener {
         setScreen(gameScreen);
     }
 
+    /*
+    On end of game set back to the menu screen and clear the game state
+     */
+    public void endGame(){
+        setScreen(menuScreen);
+        gameScreen = new GameScreen(this);
+    }
+
     @Override
     public void render() {
         super.render();

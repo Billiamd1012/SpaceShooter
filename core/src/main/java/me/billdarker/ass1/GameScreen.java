@@ -1,13 +1,18 @@
 package me.billdarker.ass1;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class GameScreen implements Screen {
 
@@ -33,6 +38,8 @@ public class GameScreen implements Screen {
     private Button gamePadRightButton;
     private Texture shoot;
     private Button shootButton;
+    private Texture pause;
+    private ImageButton pauseButton;
 
     private boolean isPaused;
 
@@ -73,6 +80,7 @@ public class GameScreen implements Screen {
         gamePadLeft = new Texture("pixel-art-space-shooter-gui/PNG/Ingame_Interface/ingame_0031_arrow-copy-2.png");
         gamePadRight = new Texture("pixel-art-space-shooter-gui/PNG/Ingame_Interface/ingame_0032_arrow-copy-3.png");
         shoot = new Texture("pixel-art-space-shooter-gui/PNG/Ingame_Interface/ingame_0030_fire.png");
+        pause = new Texture("pixel-art-space-shooter-gui/PNG/Elements/element_0081_pause.png");
 
         //position gamepad buttons
         float gamepadScaling = 3f;
@@ -111,6 +119,27 @@ public class GameScreen implements Screen {
         float shoot_w = shoot.getWidth()*gamepadScaling;
         float shoot_h = shoot.getHeight()*gamepadScaling;
         shootButton = new Button(shoot_x,shoot_y,shoot_w,shoot_h,shoot,shoot);
+
+        float pause_x = Gdx.graphics.getWidth()*0.05f;
+        float pause_y = Gdx.graphics.getHeight()*0.90f;
+        float pause_w = pause.getWidth()*gamepadScaling;
+        float pause_h = pause.getHeight()*gamepadScaling;
+        TextureRegionDrawable pauseDrawable = new TextureRegionDrawable(pause);
+        pauseDrawable.setMinSize(pause_w,pause_h);
+        pauseButton = new ImageButton(pauseDrawable);
+        pauseButton.setPosition(pause_x,pause_y);
+
+        stage.addActor(pauseButton);
+        pauseButton.addListener(new ClickListener() {
+            @Override
+            public void clicked (InputEvent event, float x, float y) {
+                isPaused = !isPaused;
+                Gdx.app.log("pause","Clicked pause");
+            }
+        });
+
+        Gdx.input.setInputProcessor(new InputMultiplexer(stage, ui));
+
     }
 
     @Override
@@ -133,29 +162,29 @@ public class GameScreen implements Screen {
             Gdx.gl.glClearColor(0, 0, 0, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-            //update game state
             update(delta);
+        //update game state
 
-            batch.begin();
-            //draw background
-            stage.draw();
-            //draw enemies
-            enemyManager.drawEnemies(batch);
-            //draw character
-            player.draw(batch, delta);
-            batch.end();
+        batch.begin();
+        //draw background
+        stage.draw();
+        //draw enemies
+        enemyManager.drawEnemies(batch);
+        //draw character
+        player.draw(batch, delta);
+        batch.end();
 
-            //draw separate ui batch to controls appear above everything else
-            uiBatch.begin();
+        //draw separate ui batch to controls appear above everything else
+        uiBatch.begin();
 
-            //draw controls
-            ui.draw();
-            gamePadUpButton.draw(uiBatch);
-            gamePadDownButton.draw(uiBatch);
-            gamePadLeftButton.draw(uiBatch);
-            gamePadRightButton.draw(uiBatch);
-            shootButton.draw(uiBatch);
-            uiBatch.end();
+        //draw controls
+        ui.draw();
+        gamePadUpButton.draw(uiBatch);
+        gamePadDownButton.draw(uiBatch);
+        gamePadLeftButton.draw(uiBatch);
+        gamePadRightButton.draw(uiBatch);
+        shootButton.draw(uiBatch);
+        uiBatch.end();
         }
     }
     /**Method for all game logic. This method is called at the start of GameCore.render() before
@@ -209,6 +238,7 @@ public class GameScreen implements Screen {
         //if enemy hits the player then end the game
         if (enemyManager.CheckPlayerCollision(playerBound)){
             isPaused = true;
+
             Gdx.app.log("Collision","Player hit an enemy");
         }
 

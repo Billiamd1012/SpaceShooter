@@ -28,6 +28,9 @@ public class Player {
 
     private float exhaustOffsetX;
     private float exhaustOffsetY;
+    private boolean deathAnimationFinished;
+    private float deathStateTime;
+    private boolean isDead;
 
     public Player(){
         playerTexture = new Texture("pixel-art-enemy-spaceship-2d-sprites/PNG_Parts&Spriter_Animation/Ship1/Ship1.png");
@@ -51,6 +54,7 @@ public class Player {
     public void dispose(){
         bulletTexture.dispose();
         playerTexture.dispose();
+        playerAnimation.dispose();
     }
 
     public Rectangle getBounds(){
@@ -100,14 +104,33 @@ public class Player {
         bullets.add(bullet);
     }
 
-    public void draw(Batch batch, float delta){
-        for (Bullet bullet:
-            bullets){
+    public void die(){
+        isDead = true;
+    }
+
+
+    public void draw(Batch batch, float delta) {
+        if (isDead) {
+            deathStateTime += delta;
+            frame = playerAnimation.getFrame(true, false, delta, deathStateTime);
+            if (playerAnimation.isDeathAnimationFinished(deathStateTime)) {
+                deathAnimationFinished = true;
+            }
+            batch.draw(frame, characterX, characterY,
+                frame.getRegionWidth() * textureScale,
+                frame.getRegionHeight() * textureScale);
+            return;
+        }
+
+        for (Bullet bullet : bullets) {
             bullet.draw(batch);
         }
-        frame = playerAnimation.getFrame(isMoving, delta);
-        batch.draw(frame,characterX+exhaustOffsetX,characterY+exhaustOffsetY,frame.getRegionWidth()*textureScale,frame.getRegionHeight()*textureScale);
-        sprite.draw(batch);
 
+        frame = playerAnimation.getFrame(false, isMoving, delta, 0f);
+        batch.draw(frame, characterX + exhaustOffsetX, characterY + exhaustOffsetY,
+            frame.getRegionWidth() * textureScale,
+            frame.getRegionHeight() * textureScale);
+        sprite.draw(batch);
     }
+
 }

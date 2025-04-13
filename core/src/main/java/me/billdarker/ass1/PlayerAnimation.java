@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import java.util.ArrayList;
 
 public class PlayerAnimation {
-    private Animation<TextureRegion> flight, turbo;
+    private Animation<TextureRegion> flight, turbo, die;
     private float stateTime = 0f;
     private final ArrayList<Texture> texturesToDispose = new ArrayList<>();
 
@@ -22,6 +22,10 @@ public class PlayerAnimation {
         //turbo
         turbo = new Animation<>(0.1f, loadFrames("pixel-art-alien-spaceship-2d-game-sprites/PNG_Animations/Exhaust/Ship1/Ship1_turbo_00", 4));
         turbo.setPlayMode(Animation.PlayMode.LOOP);
+
+        //death animation
+        die = new Animation<>(0.2f, loadFrames("pixel-art-enemy-spaceship-2d-sprites/PNG_Animations/Explosions/Ship1_Explosion/Ship1_Explosion_00",9));
+        die.setPlayMode(Animation.PlayMode.NORMAL);
     }
 
     /*
@@ -40,9 +44,20 @@ public class PlayerAnimation {
     /*
         Get the current frame to display
      */
-    public TextureRegion getFrame(boolean isMoving, float delta) {
-        stateTime += delta;
-        return (isMoving ? turbo : flight).getKeyFrame(stateTime);
+    public TextureRegion getFrame(boolean isDead, boolean isMoving, float delta, float deathStateTime) {
+        if (isDead) {
+            return getDeathFrame(deathStateTime);
+        } else {
+            stateTime += delta;
+            return (isMoving ? turbo : flight).getKeyFrame(stateTime);
+        }
+    }
+    public TextureRegion getDeathFrame(float stateTime) {
+        return die.getKeyFrame(stateTime);
+    }
+
+    public boolean isDeathAnimationFinished(float stateTime) {
+        return die.isAnimationFinished(stateTime);
     }
 
     /*
