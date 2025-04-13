@@ -163,28 +163,28 @@ public class GameScreen implements Screen {
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
             update(delta);
-        //update game state
+            //update game state
 
-        batch.begin();
-        //draw background
-        stage.draw();
-        //draw enemies
-        enemyManager.drawEnemies(batch);
-        //draw character
-        player.draw(batch, delta);
-        batch.end();
+            batch.begin();
+            //draw background
+            stage.draw();
+            //draw enemies
+            enemyManager.drawEnemies(batch);
+            //draw character
+            player.draw(batch, delta);
+            batch.end();
 
-        //draw separate ui batch to controls appear above everything else
-        uiBatch.begin();
+            //draw separate ui batch to controls appear above everything else
+            uiBatch.begin();
 
-        //draw controls
-        ui.draw();
-        gamePadUpButton.draw(uiBatch);
-        gamePadDownButton.draw(uiBatch);
-        gamePadLeftButton.draw(uiBatch);
-        gamePadRightButton.draw(uiBatch);
-        shootButton.draw(uiBatch);
-        uiBatch.end();
+            //draw controls
+            ui.draw();
+            gamePadUpButton.draw(uiBatch);
+            gamePadDownButton.draw(uiBatch);
+            gamePadLeftButton.draw(uiBatch);
+            gamePadRightButton.draw(uiBatch);
+            shootButton.draw(uiBatch);
+            uiBatch.end();
         }
     }
     /**Method for all game logic. This method is called at the start of GameCore.render() before
@@ -237,9 +237,11 @@ public class GameScreen implements Screen {
 
         //if enemy hits the player then end the game
         if (enemyManager.CheckPlayerCollision(playerBound)){
-            isPaused = true;
-
+            player.die();
             Gdx.app.log("Collision","Player hit an enemy");
+        }
+        if (player.deathAnimationFinished){
+            game.endGame();
         }
 
     }

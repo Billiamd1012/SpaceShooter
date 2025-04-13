@@ -28,7 +28,7 @@ public class Player {
 
     private float exhaustOffsetX;
     private float exhaustOffsetY;
-    private boolean deathAnimationFinished;
+    public boolean deathAnimationFinished = false;
     private float deathStateTime;
     private boolean isDead;
 
